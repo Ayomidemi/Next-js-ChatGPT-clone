@@ -1,0 +1,26 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+
+type Data = {
+  answer: string;
+};
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
+  const { text, chatId, model, session } = req.body;
+
+  if (!text) {
+    res.status(400).json({ answer: "Please provide a question!" });
+    return;
+  }
+  if (!chatId) {
+    res.status(400).json({ answer: "Please provide a valid chat ID!" });
+    return;
+  }
+
+  //   ChatGPT query
+  const response = await query(text, chatId, model);
+
+  res.status(200).json({ name: "John Doe" });
+}
