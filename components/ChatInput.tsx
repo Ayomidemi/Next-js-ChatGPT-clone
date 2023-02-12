@@ -13,17 +13,17 @@ type Props = {
 
 const ChatInput = ({ chatId }: Props) => {
   const { data: session } = useSession();
-  const [text, setText] = useState("");
+  const [prompt, setPrompt] = useState("");
 
   //   useSWR to get model
   const model = "text-davinci-003";
 
   const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!text) return;
+    if (!prompt) return;
 
-    const input = text.trim();
-    setText("");
+    const input = prompt.trim();
+    setPrompt("");
 
     const message: Message = {
       text: input,
@@ -57,7 +57,7 @@ const ChatInput = ({ chatId }: Props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        text: input,
+        prompt: input,
         chatId,
         model,
         session,
@@ -75,14 +75,14 @@ const ChatInput = ({ chatId }: Props) => {
         <input
           type="text"
           placeholder="Type your message here..."
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
           className="bg-transparent focus:outline-none flex-1 disabled:text-gray-300 disabled:cursor-not-allowed"
           disabled={!session}
         />
         <button
           type="submit"
-          disabled={!session || !text}
+          disabled={!session || !prompt}
           className="bg-[#11a37f] hover:opacity-50 text-white font-bold px-4 py-2 rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
           <PaperAirplaneIcon className="h-4 w-4 -rotate-45" />
